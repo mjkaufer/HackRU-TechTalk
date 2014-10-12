@@ -1,0 +1,91 @@
+<html>
+	<!--Template made by mjkaufer- http://github.com/mjkaufer-->
+	<head>
+		<title>three.js-template</title>
+		<style>
+			body{
+				background-color: #000000;
+				margin: 0px;
+				overflow: hidden;
+				color:white;
+				font-size:0.8em;
+				line-height:0.25em;
+        font-family:sans-serif;
+			}
+			a{
+				color:#F0F0F0;
+			}
+		</style>
+	</head>
+	<body>
+
+    <script src="js/build/three.min.js"></script>
+    <script src="js/controls/TrackballControls.js"></script>
+    <script src="js/setup.js"></script>
+
+		<div style="position:absolute;margin-left:25px;" id="h">
+			<p>Stuff you want to say here</p>
+			<p>Template by <a href="http://github.com/mjkaufer">mjkaufer</a></p>
+		</div>
+
+		<script>
+			var container;
+			var camera, scene, renderer, controls;
+			var mouseX, mouseY;
+			var windowHalfX = window.innerWidth / 2;
+			var windowHalfY = window.innerHeight / 2;
+			var particleMaterial; 
+			var count;
+			
+			init();
+			animate();
+
+			function init(){
+				container = document.createElement('div');
+				document.body.appendChild(container);
+
+				camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 3000);
+				camera.position.z = 200;
+
+				scene = new THREE.Scene();
+
+				controls = new THREE.TrackballControls(camera);
+				count = 0;
+				var PI2 = Math.PI * 2;
+
+				particleMaterial = new THREE.ParticleCanvasMaterial({
+					color: 0xffffff,
+					program: function(context){
+						context.beginPath();
+						context.arc(0, 0, 1, 0, PI2, true);
+						context.fill();
+					}
+				});
+
+				renderer = new THREE.CanvasRenderer();
+				renderer.setSize(window.innerWidth, window.innerHeight);
+
+				container.appendChild(renderer.domElement);
+				document.addEventListener('mousemove', onDocumentMouseMove, false);
+				window.addEventListener('resize', onWindowResize, false);
+			}
+
+			function animate(){
+				requestAnimationFrame(animate);
+				render();
+			}
+
+			function render(){
+				camera.lookAt(scene.position);
+				
+				controls.update();
+				renderer.render(scene, camera);
+      			count++;
+			}
+
+		</script>
+
+    <script src="js/demos.js"></script>
+    <!-- A bunch of demos I made for you all - we call it after because everything needs to have isntantiated first-->
+	</body>
+</html>
